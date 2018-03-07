@@ -16,10 +16,12 @@ class PokemonSpider(scrapy.Spider):
         filename = urllib.parse.unquote(response.url.split("/")[-1])
         with open(filename,'wb') as f:
             f.write(response.body)
-        id='firstHeading'
+        # id='firstHeading'
         item = PokemoncatcherItem()
         item['name'] = response.xpath('//h1/text()').extract()[0]
         item['id'] = response.xpath('//a[@title="宝可梦列表（按全国图鉴编号）"]/text()').extract()[0][1:]
-        print(item['name'])
-        print(item['id'])
+        metafile = filename+'详细信息'
+        with open(metafile,'wb') as f:
+            f.write(item['name'])
+            f.write(item['id'])
         yield item
